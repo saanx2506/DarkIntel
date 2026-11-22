@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarkIntel — Threat Intelligence</title>
+  <link rel="stylesheet" href="static/app.css">
+</head>
+<body>
+
+  <!-- LOGIN VIEW -->
+  <div id="view-login" class="view hidden">
+    <div class="login-split">
+      <div class="login-visual">
+        <div class="visual-header">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="title">SYS.MONITOR // ACTIVE</div>
+        </div>
+        <div class="visual-content">
+          <h1>Identify threats faster.</h1>
+          <p>Dark-web monitoring and threat intelligence.</p>
+          <div class="data-grid">
+            <div class="data-row"><span class="ip">192.168.1.104</span><span class="tag critical">CRITICAL</span><span class="desc">Ransomware C2 Beacon</span></div>
+            <div class="data-row"><span class="ip">45.33.22.11</span><span class="tag high">HIGH</span><span class="desc">Cobalt Strike Malleable C2</span></div>
+            <div class="data-row"><span class="ip">10.0.0.55</span><span class="tag med">MEDIUM</span><span class="desc">Anomalous Outbound Traffic</span></div>
+            <div class="data-row"><span class="ip">185.12.9.2</span><span class="tag high">HIGH</span><span class="desc">Phishing Infrastructure</span></div>
+          </div>
+        </div>
+        <div class="visual-footer">
+          <div class="stat"><span>1.4M</span> IOCs Analyzed</div>
+          <div class="stat"><span>24/7</span> Monitoring</div>
+        </div>
+      </div>
+      <div class="login-form-side">
+        <div class="form-container">
+          <div class="form-header">
+            <div class="brand">◉ DarkIntel</div>
+            <h2>Sign in to your workspace</h2>
+            <p>Enter your credentials to access the console.</p>
+          </div>
+          <form id="login-form">
+            <div id="login-error" class="auth-error hidden"></div>
+            <div class="form-group"><label>Work Email</label><input type="email" id="login-email" required placeholder="admin@darkintel.local"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••"></div>
+            <button type="submit" id="login-btn" class="btn-primary">Sign in</button>
+            <div class="auth-switch">Don't have an account? <a href="#" onclick="toggleAuth('register')">Register</a></div>
+          </form>
+          <form id="register-form" class="hidden">
+            <div id="register-error" class="auth-error hidden"></div>
+            <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="Jane Doe"></div>
+            <div class="form-group"><label>Work Email</label><input type="email" id="reg-email" required placeholder="jane@company.com"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="reg-password" required minlength="8" placeholder="Min 8 characters"></div>
+            <button type="submit" id="register-btn" class="btn-primary">Create Account</button>
+            <div class="auth-switch">Already have an account? <a href="#" onclick="toggleAuth('login')">Sign in</a></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP VIEW -->
+  <div id="view-app" class="view hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand"><span class="logo">◉ DarkIntel</span></div>
+      <nav class="sidebar-nav">
+        <div class="nav-group">Intelligence</div>
+        <a href="#/dashboard" class="nav-item" data-page="dashboard">Dashboard</a>
+        <a href="#/indicators" class="nav-item" data-page="indicators">Indicators</a>
+        <a href="#/threat-intel" class="nav-item" data-page="threat-intel">Threat Intel</a>
+        <a href="#/search" class="nav-item" data-page="search">Search</a>
+        <div class="nav-group">System</div>
+        <a href="#/settings" class="nav-item" data-page="settings">Settings</a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <div class="name" id="user-name">Admin</div>
+          <div class="role" id="user-role">analyst</div>
+        </div>
+        <button id="logout-btn">Sign Out</button>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="search-box">
+          <input type="text" placeholder="Search IPs, domains, hashes...">
+        </div>
+        <div class="topbar-actions">
+          <button id="refresh-btn" class="btn-secondary">↻ Sync All Sources</button>
+        </div>
+      </header>
+      <div class="page-header">
+        <h1 id="page-title">Dashboard</h1>
+      </div>
+      <div class="content" id="main-content"></div>
+    </main>
+  </div>
+
+  <script src="static/app.js"></script>
+</body>
+</html>
