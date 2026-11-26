@@ -11,3 +11,4 @@ bcrypt==4.0.1
 python-multipart>=0.0.9
 email-validator>=2.2.0
 pymisp>=2.4.190
+elasticsearch[async]>=8.12.0

@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     SEED_ADMIN_EMAIL: str = "admin@darkintel.local"
     SEED_ADMIN_PASSWORD: str = "Password@123"
 
+    # Elasticsearch
+    ELASTICSEARCH_URL: str = "https://localhost:9200"
+    ELASTICSEARCH_USERNAME: str = "elastic"
+    ELASTICSEARCH_PASSWORD: str = "StrongPassword@1234"
+    ELASTICSEARCH_VERIFY_CERTS: bool = False
+
     class Config:
         env_file = ".env"
 

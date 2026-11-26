@@ -9,6 +9,18 @@ from .enrichment import compute_severity
 SEARCH_ONLY_PROVIDERS = {"abuseipdb", "virustotal", "intelx", "pulsedive"}
 
 
+async def _try_index_to_es(ioc=None, event=None, source_name=""):
+    """Best-effort ES indexing — never blocks ingestion on failure."""
+    try:
+        from .elastic import index_ioc, index_event
+        if ioc:
+            await index_ioc(ioc, source_name)
+        if event:
+            await index_event(event, source_name)
+    except Exception as e:
+        print(f"[es-index] Warning: {e}")
+
+
 async def run_ingestion_for_user(user_id: int):
     db: Session = SessionLocal()
     sources = db.query(SourceConfig).filter_by(user_id=user_id, is_active=True).all()
@@ -57,6 +69,7 @@ async def run_ingestion_for_user(user_id: int):
                     db.add(event_obj)
                     db.flush()
                     total_events += 1
+                    await _try_index_to_es(event=event_obj, source_name=src.name)
 
             if ioc_dict and ioc_dict.get("value"):
                 exists = db.query(GenericIOC).filter_by(
@@ -73,11 +86,14 @@ async def run_ingestion_for_user(user_id: int):
                     )
                     ioc.severity = compute_severity(ioc)
                     db.add(ioc)
+                    db.flush()
                     total_iocs += 1
+                    await _try_index_to_es(ioc=ioc, source_name=src.name)
 
         # 3. Update timestamp and commit (runs even if 0 items)
         src.last_sync = datetime.utcnow()
         db.commit()
+        
 
     db.close()
     print(f"[ingestion] Finished. New Events: {total_events}, New IOCs: {total_iocs}")

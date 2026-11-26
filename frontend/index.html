@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DarkIntel — Threat Intelligence</title>
-  <link rel="stylesheet" href="static/app.css">
+  <link rel="stylesheet" href="static/app.css?v=darkintel_v3">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -13,12 +14,12 @@
     <div class="login-split">
       <div class="login-visual">
         <div class="visual-header">
-          <div class="dots"><span></span><span></span><span></span></div>
-          <div class="title">SYS.MONITOR // ACTIVE</div>
+          <div class="dots"><span class="active"></span><span></span><span></span></div>
+          <div class="title">DARKINTEL // DEFENSE INTELLIGENCE CONSOLE</div>
         </div>
         <div class="visual-content">
-          <h1>Identify threats faster.</h1>
-          <p>Dark-web monitoring and threat intelligence.</p>
+          <h1>Shield your perimeter with actionable cyber intelligence.</h1>
+          <p>Real-time threat observable ingestion, MISP Galaxy adversary tracking, and automated defense telemetry.</p>
           <div class="data-grid">
             <div class="data-row"><span class="ip">192.168.1.104</span><span class="tag critical">CRITICAL</span><span class="desc">Ransomware C2 Beacon</span></div>
             <div class="data-row"><span class="ip">45.33.22.11</span><span class="tag high">HIGH</span><span class="desc">Cobalt Strike Malleable C2</span></div>
@@ -27,22 +28,23 @@
           </div>
         </div>
         <div class="visual-footer">
-          <div class="stat"><span>1.4M</span> IOCs Analyzed</div>
-          <div class="stat"><span>24/7</span> Monitoring</div>
+          <div class="stat"><span>3.9K+</span> IOCs Ingested</div>
+          <div class="stat"><span>4.2K+</span> Adversary Clusters</div>
+          <div class="stat"><span>24/7</span> Automated Feeds</div>
         </div>
       </div>
       <div class="login-form-side">
         <div class="form-container">
           <div class="form-header">
-            <div class="brand">◉ DarkIntel</div>
-            <h2>Sign in to your workspace</h2>
-            <p>Enter your credentials to access the console.</p>
+            <div class="brand"><span class="brand-shield">🛡️</span> DarkIntel</div>
+            <h2>Sign in to your defensive console</h2>
+            <p>Enter your analyst credentials to access threat operations.</p>
           </div>
           <form id="login-form">
             <div id="login-error" class="auth-error hidden"></div>
             <div class="form-group"><label>Work Email</label><input type="email" id="login-email" required placeholder="admin@darkintel.local"></div>
             <div class="form-group"><label>Password</label><input type="password" id="login-password" required placeholder="••••••••"></div>
-            <button type="submit" id="login-btn" class="btn-primary">Sign in</button>
+            <button type="submit" id="login-btn" class="btn-primary">Access Console</button>
             <div class="auth-switch">Don't have an account? <a href="#" onclick="toggleAuth('register')">Register</a></div>
           </form>
           <form id="register-form" class="hidden">
@@ -61,41 +63,90 @@
   <!-- MAIN APP VIEW -->
   <div id="view-app" class="view hidden">
     <aside class="sidebar">
-      <div class="sidebar-brand"><span class="logo">◉ DarkIntel</span></div>
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <span class="brand-shield">🛡️</span>
+          <div class="brand-text-block">
+            <span class="brand-title">DARKINTEL</span>
+            <span class="brand-tag">INTELLIGENCE</span>
+          </div>
+        </div>
+      </div>
       <nav class="sidebar-nav">
-        <div class="nav-group">Intelligence</div>
-        <a href="#/dashboard" class="nav-item" data-page="dashboard">Dashboard</a>
-        <a href="#/indicators" class="nav-item" data-page="indicators">Indicators</a>
-        <a href="#/threat-intel" class="nav-item" data-page="threat-intel">Threat Intel</a>
-        <a href="#/search" class="nav-item" data-page="search">Search</a>
-        <div class="nav-group">System</div>
-        <a href="#/settings" class="nav-item" data-page="settings">Settings</a>
+        <div class="nav-group">Threat Operations</div>
+        <a href="#/dashboard" class="nav-item" data-page="dashboard">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+        <a href="#/custom-dashboards" class="nav-item" data-page="custom-dashboards">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Custom Dashboards
+        </a>
+        <a href="#/indicators" class="nav-item" data-page="indicators">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Indicators
+        </a>
+        <a href="#/adversaries" class="nav-item" data-page="adversaries">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/></svg>
+          Adversaries
+        </a>
+        <a href="#/search" class="nav-item" data-page="search">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </a>
+        <div class="nav-group">Ingestion & Feeds</div>
+        <a href="#/integrations" class="nav-item" data-page="integrations">
+          <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          Integrations
+        </a>
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar">A</div>
         <div class="user-info">
           <div class="name" id="user-name">Admin</div>
-          <div class="role" id="user-role">analyst</div>
+          <div class="role" id="user-role">Analyst</div>
         </div>
         <button id="logout-btn">Sign Out</button>
       </div>
     </aside>
     <main class="main">
       <header class="topbar">
-        <div class="search-box">
-          <input type="text" placeholder="Search IPs, domains, hashes...">
+        <div class="darkintel-command-search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="platform-search-input" placeholder="Query observables (IP, URL, Hash, Domain), adversaries, CVEs... [Ctrl+K]">
+          <span class="search-kbd-pill">⌘K</span>
         </div>
+
         <div class="topbar-actions">
-          <button id="refresh-btn" class="btn-secondary">↻ Sync All Sources</button>
+          <button class="topbar-action-pill" onclick="window.openIngestIOCsModal()" title="Ingest Threat Indicators (CSV / XML)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Ingest IOCs</span>
+          </button>
+          <button class="topbar-icon-btn" title="Export Dashboard & Telemetry" id="btn-export-view" onclick="window.exportDashboardTelemetry()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+          <button class="topbar-icon-btn" title="Threat Alerts & Notifications" id="btn-notifications" onclick="window.toggleNotificationsDrawer()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notification-badge-dot"></span>
+          </button>
+          <button id="refresh-btn" class="btn-secondary" title="Sync All Feeds">↻ Sync Feeds</button>
         </div>
       </header>
-      <div class="page-header">
+      <div class="page-header" id="page-header-container">
         <h1 id="page-title">Dashboard</h1>
       </div>
       <div class="content" id="main-content"></div>
     </main>
   </div>
 
-  <script src="static/app.js"></script>
+  <!-- Adversary Dossier Drawer -->
+  <div id="drawer-backdrop" class="drawer-backdrop hidden" onclick="window.closeAdversaryDrawer()"></div>
+  <aside id="adversary-drawer" class="adversary-drawer hidden"></aside>
+
+  <!-- Generic Modal Backdrop & Container -->
+  <div id="modal-backdrop" class="modal-backdrop hidden" onclick="window.closeModal()"></div>
+  <div id="app-modal" class="app-modal hidden"></div>
+
+  <script src="static/app.js?v=darkintel_v3"></script>
 </body>
 </html>

@@ -108,3 +108,57 @@ class SearchResult(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     query: Mapped["SearchQuery"] = relationship(back_populates="results")
+
+
+class GalaxyCluster(Base):
+    __tablename__ = "galaxy_clusters"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    cluster_type: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    name: Mapped[str] = mapped_column(String(128), index=True)
+    description: Mapped[str | None] = mapped_column(Text)
+    version: Mapped[str | None] = mapped_column(String(32))
+    source_url: Mapped[str | None] = mapped_column(String(256))
+    elements_count: Mapped[int] = mapped_column(Integer, default=0)
+    last_synced: Mapped[datetime | None] = mapped_column(DateTime)
+
+    elements: Mapped[list["Adversary"]] = relationship(
+        back_populates="cluster", cascade="all, delete-orphan"
+    )
+
+
+class Adversary(Base):
+    __tablename__ = "adversaries"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    cluster_id: Mapped[int] = mapped_column(ForeignKey("galaxy_clusters.id"), index=True)
+    uuid: Mapped[str] = mapped_column(String(64), index=True)
+    name: Mapped[str] = mapped_column(String(256), index=True)
+    description: Mapped[str | None] = mapped_column(Text)
+    country: Mapped[str | None] = mapped_column(String(16), index=True)
+    state_sponsor: Mapped[str | None] = mapped_column(String(128), index=True)
+    synonyms: Mapped[str | None] = mapped_column(Text)
+    target_category: Mapped[str | None] = mapped_column(Text)
+    incident_type: Mapped[str | None] = mapped_column(String(128))
+    refs: Mapped[str | None] = mapped_column(Text)
+    meta_json: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    cluster: Mapped["GalaxyCluster"] = relationship(back_populates="elements")
+
+    __table_args__ = (
+        UniqueConstraint("cluster_id", "uuid", name="uq_adversary_cluster_uuid"),
+    )
+
+
+class GalaxySyncState(Base):
+    __tablename__ = "galaxy_sync_state"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    repo: Mapped[str] = mapped_column(String(128), default="MISP/misp-galaxy")
+    branch: Mapped[str] = mapped_column(String(32), default="main")
+    last_commit_sha: Mapped[str | None] = mapped_column(String(64))
+    last_commit_date: Mapped[str | None] = mapped_column(String(64))
+    last_commit_message: Mapped[str | None] = mapped_column(String(512))
+    last_synced_at: Mapped[datetime | None] = mapped_column(DateTime)
+    is_syncing: Mapped[bool] = mapped_column(Boolean, default=False)
+    status: Mapped[str] = mapped_column(String(32), default="idle")
+    error: Mapped[str | None] = mapped_column(Text)
